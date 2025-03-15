@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифрування RSA</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        textarea, input, button { display: block; margin: 10px 0; width: 100%; }
+        img { max-width: 100%; height: auto; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Шифрування та розшифрування RSA</h1>
+    <p>RSA — це асиметричний криптографічний алгоритм, що використовує відкритий і закритий ключі.</p>
+
+    <h2>Як працює RSA?</h2>
+    <p>Алгоритм базується на складності розкладання великих чисел на прості множники.</p>
+    <ol>
+        <li>Обираються два великі прості числа \( p \) і \( q \).</li>
+        <li>Обчислюється їх добуток \( n = p \times q \), який використовується у відкритому та закритому ключах.</li>
+        <li>Обирається число \( e \) — відкритий ключ, взаємно просте з \( (p-1)(q-1) \).</li>
+        <li>Обчислюється закритий ключ \( d \), що є мультиплікативно оберненим до \( e \) за модулем \( (p-1)(q-1) \).</li>
+        <li>Шифрування: \( C = M^e \mod n \).</li>
+        <li>Розшифрування: \( M = C^d \mod n \).</li>
+    </ol>
+
+    <h3>Ілюстрація роботи RSA</h3>
+    <img src="https://s.dou.ua/storage-files/image_10819236841681390497150.png" alt="Схема роботи RSA">
+
+    <h2>Демонстрація</h2>
+    <textarea id="inputText" placeholder="Введіть текст"></textarea>
+    <button onclick="encrypt()">Зашифрувати</button>
+    <textarea id="encryptedText" placeholder="Зашифрований текст"></textarea>
+    <button onclick="decrypt()">Розшифрувати</button>
+    <textarea id="decryptedText" placeholder="Розшифрований текст"></textarea>
+
+    <h2>Квіз: Розшифруйте слова</h2>
+    <p>Введіть правильне розшифроване слово у поле введення.</p>
+    <p><strong>Зашифроване слово:</strong></p>
+    <textarea id="quizEncrypted" readonly></textarea>
+    <input type="text" id="quizAnswer" placeholder="Введіть розшифроване слово">
+    <button onclick="checkQuizAnswer()">Перевірити</button>
+    <p id="quizResult"></p>
+
+    <script>
+        // Генерація ключів
+        const crypt = new JSEncrypt({ default_key_size: 1024 });
+        crypt.getKey();
+        const publicKey = crypt.getPublicKey();
+        const privateKey = crypt.getPrivateKey();
+
+        function encrypt() {
+            const inputText = document.getElementById('inputText').value;
+            crypt.setPublicKey(publicKey);
+            const encrypted = crypt.encrypt(inputText);
+            document.getElementById('encryptedText').value = encrypted || 'Помилка шифрування';
+        }
+
+        function decrypt() {
+            const encryptedText = document.getElementById('encryptedText').value;
+            crypt.setPrivateKey(privateKey);
+            const decrypted = crypt.decrypt(encryptedText);
+            document.getElementById('decryptedText').value = decrypted || 'Помилка розшифрування';
+        }
+
+        // Квіз: генерація зашифрованого слова
+        const quizWord = "секрет";
+        crypt.setPublicKey(publicKey);
+        const quizEncrypted = crypt.encrypt(quizWord);
+        document.getElementById('quizEncrypted').value = quizEncrypted;
+
+        function checkQuizAnswer() {
+            const userAnswer = document.getElementById('quizAnswer').value;
+            crypt.setPrivateKey(privateKey);
+            const decryptedWord = crypt.decrypt(quizEncrypted);
+            if (userAnswer === decryptedWord) {
+                document.getElementById('quizResult').innerText = 'Правильно!';
+            } else {
+                document.getElementById('quizResult').innerText = 'Неправильно, спробуйте ще раз.';
+            }
+        }
+    </script>
+</body>
+</html>
