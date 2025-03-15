@@ -6,21 +6,22 @@
     <title>Шифрування RSA</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 40px; 
-            line-height: 1.6; 
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+            background-color: #f9f9f9;
         }
-        textarea, input, button { 
-            display: block; 
-            margin: 10px 0; 
-            width: 100%; 
-            max-width: 500px; 
+        textarea, input, button {
+            display: block;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 500px;
         }
-        img { 
-            max-width: 100%; 
-            height: auto; 
-            margin: 20px 0; 
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
         }
         button {
             background-color: #4CAF50;
@@ -45,49 +46,87 @@
         h1, h2, h3 {
             color: #333;
         }
-        p#quizResult {
+        p.quiz-result {
             font-weight: bold;
+            margin: 5px 0;
+        }
+        section {
+            margin-bottom: 40px;
         }
     </style>
 </head>
 <body>
-    <h1>Шифрування та розшифрування RSA</h1>
-    <p>RSA — це асиметричний криптографічний алгоритм, що використовує відкритий і закритий ключі для захисту даних.</p>
+    <section>
+        <h1>Шифрування та розшифрування RSA</h1>
+        <p>RSA — це асиметричний криптографічний алгоритм, що використовує відкритий і закритий ключі для захисту даних.</p>
+    </section>
 
-    <h2>Як працює RSA?</h2>
-    <p>Алгоритм базується на складності розкладання великих чисел на прості множники.</p>
-    <ol>
-        <li>Обираються два великі прості числа \( p \) і \( q \).</li>
-        <li>Обчислюється їх добуток \( n = p \times q \), який використовується у відкритому та закритому ключах.</li>
-        <li>Обирається число \( e \) — відкритий ключ, взаємно просте з \( (p-1)(q-1) \).</li>
-        <li>Обчислюється закритий ключ \( d \), що є мультиплікативно оберненим до \( e \) за модулем \( (p-1)(q-1) \).</li>
-        <li>Шифрування: \( C = M^e \mod n \).</li>
-        <li>Розшифрування: \( M = C^d \mod n \).</li>
-    </ol>
+    <section>
+        <h2>Як працює RSA?</h2>
+        <p>Алгоритм базується на складності розкладання великих чисел на прості множники.</p>
+        <ol>
+            <li>Обираються два великі прості числа \( p \) і \( q \).</li>
+            <li>Обчислюється їх добуток \( n = p \times q \), який використовується у відкритому та закритому ключах.</li>
+            <li>Обирається число \( e \) — відкритий ключ, взаємно просте з \( (p-1)(q-1) \).</li>
+            <li>Обчислюється закритий ключ \( d \), що є мультиплікативно оберненим до \( e \) за модулем \( (p-1)(q-1) \).</li>
+            <li>Шифрування: \( C = M^e \mod n \).</li>
+            <li>Розшифрування: \( M = C^d \mod n \).</li>
+        </ol>
+    </section>
 
-    <h3>Ілюстрація роботи RSA</h3>
-    <img src="https://s.dou.ua/storage-files/image_10819236841681390497150.png" alt="Схема роботи RSA">
+    <section>
+        <h3>Ілюстрація роботи RSA</h3>
+        <img src="https://s.dou.ua/storage-files/image_10819236841681390497150.png" alt="Схема роботи RSA">
+    </section>
 
-    <h2>Історія RSA</h2>
-    <p>RSA був винайдений у 1977 році Рональдом Рівестом, Аді Шаміром і Леонардом Адлеманом. Алгоритм названий за першими літерами їхніх прізвищ. RSA є одним із перших асиметричних криптографічних алгоритмів і широко використовується для захисту даних в інтернеті, зокрема в протоколах HTTPS, SSH та інших.</p>
+    <section>
+        <h2>Історія RSA</h2>
+        <p>RSA був винайдений у 1977 році Рональдом Рівестом, Аді Шаміром і Леонардом Адлеманом. Алгоритм названий за першими літерами їхніх прізвищ. RSA є одним із перших асиметричних криптографічних алгоритмів і широко використовується для захисту даних в інтернеті, зокрема в протоколах HTTPS, SSH та інших.</p>
+    </section>
 
-    <h2>Демонстрація</h2>
-    <p>Введіть текст у поле нижче та натисніть "Зашифрувати", щоб отримати зашифроване повідомлення. Потім вставте зашифрований текст у відповідне поле та натисніть "Розшифрувати", щоб повернути оригінальний текст.</p>
-    <p><strong>Примітка:</strong> RSA призначений для шифрування невеликих повідомлень. Для великих даних використовуються гібридні схеми.</p>
-    <textarea id="inputText" placeholder="Введіть текст"></textarea>
-    <button onclick="encrypt()">Зашифрувати</button>
-    <textarea id="encryptedText" placeholder="Зашифрований текст"></textarea>
-    <button onclick="copyEncryptedText()">Копіювати зашифрований текст</button>
-    <button onclick="decrypt()">Розшифрувати</button>
-    <textarea id="decryptedText" placeholder="Розшифрований текст"></textarea>
+    <section>
+        <h2>Демонстрація</h2>
+        <p>Введіть текст у поле нижче та натисніть "Зашифрувати", щоб отримати зашифроване повідомлення. Потім вставте зашифрований текст у відповідне поле та натисніть "Розшифрувати", щоб повернути оригінальний текст.</p>
+        <p><strong>Примітка:</strong> RSA призначений для шифрування невеликих повідомлень. Для великих даних використовуються гібридні схеми.</p>
+        <textarea id="inputText" placeholder="Введіть текст"></textarea>
+        <button onclick="encrypt()">Зашифрувати</button>
+        <textarea id="encryptedText" placeholder="Зашифрований текст"></textarea>
+        <button onclick="copyEncryptedText()">Копіювати зашифрований текст</button>
+        <button onclick="decrypt()">Розшифрувати</button>
+        <textarea id="decryptedText" placeholder="Розшифрований текст"></textarea>
+    </section>
 
-    <h2>Квіз: Розшифруйте слова</h2>
-    <p>Подивіться на зашифроване слово нижче, розшифруйте його за допомогою демонстрації та введіть правильну відповідь.</p>
-    <p><strong>Зашифроване слово:</strong></p>
-    <textarea id="quizEncrypted" readonly></textarea>
-    <input type="text" id="quizAnswer" placeholder="Введіть розшифроване слово">
-    <button onclick="checkQuizAnswer()">Перевірити</button>
-    <p id="quizResult"></p>
+    <section>
+        <h2>Квіз: Розшифруйте слова</h2>
+        <p>Розшифруйте кожне з наведених зашифрованих слів за допомогою демонстрації та введіть правильні відповіді у відповідні поля.</p>
+
+        <p><strong>Зашифроване слово 1:</strong></p>
+        <textarea id="quizEncrypted1" readonly></textarea>
+        <input type="text" id="quizAnswer1" placeholder="Введіть розшифроване слово 1">
+        <p class="quiz-result" id="quizResult1"></p>
+
+        <p><strong>Зашифроване слово 2:</strong></p>
+        <textarea id="quizEncrypted2" readonly></textarea>
+        <input type="text" id="quizAnswer2" placeholder="Введіть розшифроване слово 2">
+        <p class="quiz-result" id="quizResult2"></p>
+
+        <p><strong>Зашифроване слово 3:</strong></p>
+        <textarea id="quizEncrypted3" readonly></textarea>
+        <input type="text" id="quizAnswer3" placeholder="Введіть розшифроване слово 3">
+        <p class="quiz-result" id="quizResult3"></p>
+
+        <p><strong>Зашифроване слово 4:</strong></p>
+        <textarea id="quizEncrypted4" readonly></textarea>
+        <input type="text" id="quizAnswer4" placeholder="Введіть розшифроване слово 4">
+        <p class="quiz-result" id="quizResult4"></p>
+
+        <p><strong>Зашифроване слово 5:</strong></p>
+        <textarea id="quizEncrypted5" readonly></textarea>
+        <input type="text" id="quizAnswer5" placeholder="Введіть розшифроване слово 5">
+        <p class="quiz-result" id="quizResult5"></p>
+
+        <button onclick="checkQuizAnswers()">Перевірити всі відповіді</button>
+    </section>
 
     <script>
         // Генерація ключів RSA при завантаженні сторінки
@@ -96,12 +135,17 @@
         const publicKey = crypt.getPublicKey();
         const privateKey = crypt.getPrivateKey();
 
-        // Масив слів для квіза та вибір випадкового слова
-        const quizWords = ["секрет", "код", "шифр", "алгоритм", "ключ"];
-        const quizWord = quizWords[Math.floor(Math.random() * quizWords.length)];
-        crypt.setPublicKey(publicKey);
-        const quizEncrypted = crypt.encrypt(quizWord);
-        document.getElementById('quizEncrypted').value = quizEncrypted;
+        // Масив слів для квіза
+        const quizWords = ["секрет", "код", "шифр", "таємниця", "загадка"];
+        const quizEncryptedTexts = [];
+
+        // Генерація зашифрованих слів для квіза
+        quizWords.forEach((word, index) => {
+            crypt.setPublicKey(publicKey);
+            const encrypted = crypt.encrypt(word);
+            quizEncryptedTexts.push(encrypted);
+            document.getElementById(`quizEncrypted${index + 1}`).value = encrypted;
+        });
 
         // Функція шифрування тексту
         function encrypt() {
@@ -119,14 +163,19 @@
             document.getElementById('decryptedText').value = decrypted || 'Помилка розшифрування';
         }
 
-        // Перевірка відповіді у квізі (нечутлива до регістру)
-        function checkQuizAnswer() {
-            const userAnswer = document.getElementById('quizAnswer').value.toLowerCase();
-            if (userAnswer === quizWord.toLowerCase()) {
-                document.getElementById('quizResult').innerText = 'Правильно!';
-            } else {
-                document.getElementById('quizResult').innerText = 'Неправильно, спробуйте ще раз.';
-            }
+        // Перевірка всіх відповідей у квізі
+        function checkQuizAnswers() {
+            quizWords.forEach((word, index) => {
+                const userAnswer = document.getElementById(`quizAnswer${index + 1}`).value.toLowerCase();
+                const resultElement = document.getElementById(`quizResult${index + 1}`);
+                if (userAnswer === word.toLowerCase()) {
+                    resultElement.innerText = 'Правильно!';
+                    resultElement.style.color = 'green';
+                } else {
+                    resultElement.innerText = 'Неправильно, спробуйте ще раз.';
+                    resultElement.style.color = 'red';
+                }
+            });
         }
 
         // Копіювання зашифрованого тексту в буфер обміну
