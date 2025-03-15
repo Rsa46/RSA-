@@ -6,14 +6,53 @@
     <title>Шифрування RSA</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        textarea, input, button { display: block; margin: 10px 0; width: 100%; }
-        img { max-width: 100%; height: auto; margin: 20px 0; }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            line-height: 1.6; 
+        }
+        textarea, input, button { 
+            display: block; 
+            margin: 10px 0; 
+            width: 100%; 
+            max-width: 500px; 
+        }
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            margin: 20px 0; 
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        textarea {
+            border: 1px solid #ccc;
+            padding: 10px;
+            resize: vertical;
+        }
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        p#quizResult {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <h1>Шифрування та розшифрування RSA</h1>
-    <p>RSA — це асиметричний криптографічний алгоритм, що використовує відкритий і закритий ключі.</p>
+    <p>RSA — це асиметричний криптографічний алгоритм, що використовує відкритий і закритий ключі для захисту даних.</p>
 
     <h2>Як працює RSA?</h2>
     <p>Алгоритм базується на складності розкладання великих чисел на прості множники.</p>
@@ -29,15 +68,21 @@
     <h3>Ілюстрація роботи RSA</h3>
     <img src="https://s.dou.ua/storage-files/image_10819236841681390497150.png" alt="Схема роботи RSA">
 
+    <h2>Історія RSA</h2>
+    <p>RSA був винайдений у 1977 році Рональдом Рівестом, Аді Шаміром і Леонардом Адлеманом. Алгоритм названий за першими літерами їхніх прізвищ. RSA є одним із перших асиметричних криптографічних алгоритмів і широко використовується для захисту даних в інтернеті, зокрема в протоколах HTTPS, SSH та інших.</p>
+
     <h2>Демонстрація</h2>
+    <p>Введіть текст у поле нижче та натисніть "Зашифрувати", щоб отримати зашифроване повідомлення. Потім вставте зашифрований текст у відповідне поле та натисніть "Розшифрувати", щоб повернути оригінальний текст.</p>
+    <p><strong>Примітка:</strong> RSA призначений для шифрування невеликих повідомлень. Для великих даних використовуються гібридні схеми.</p>
     <textarea id="inputText" placeholder="Введіть текст"></textarea>
     <button onclick="encrypt()">Зашифрувати</button>
     <textarea id="encryptedText" placeholder="Зашифрований текст"></textarea>
+    <button onclick="copyEncryptedText()">Копіювати зашифрований текст</button>
     <button onclick="decrypt()">Розшифрувати</button>
     <textarea id="decryptedText" placeholder="Розшифрований текст"></textarea>
 
     <h2>Квіз: Розшифруйте слова</h2>
-    <p>Введіть правильне розшифроване слово у поле введення.</p>
+    <p>Подивіться на зашифроване слово нижче, розшифруйте його за допомогою демонстрації та введіть правильну відповідь.</p>
     <p><strong>Зашифроване слово:</strong></p>
     <textarea id="quizEncrypted" readonly></textarea>
     <input type="text" id="quizAnswer" placeholder="Введіть розшифроване слово">
@@ -45,12 +90,20 @@
     <p id="quizResult"></p>
 
     <script>
-        // Генерація ключів
+        // Генерація ключів RSA при завантаженні сторінки
         const crypt = new JSEncrypt({ default_key_size: 1024 });
         crypt.getKey();
         const publicKey = crypt.getPublicKey();
         const privateKey = crypt.getPrivateKey();
 
+        // Масив слів для квіза та вибір випадкового слова
+        const quizWords = ["секрет", "код", "шифр", "алгоритм", "ключ"];
+        const quizWord = quizWords[Math.floor(Math.random() * quizWords.length)];
+        crypt.setPublicKey(publicKey);
+        const quizEncrypted = crypt.encrypt(quizWord);
+        document.getElementById('quizEncrypted').value = quizEncrypted;
+
+        // Функція шифрування тексту
         function encrypt() {
             const inputText = document.getElementById('inputText').value;
             crypt.setPublicKey(publicKey);
@@ -58,6 +111,7 @@
             document.getElementById('encryptedText').value = encrypted || 'Помилка шифрування';
         }
 
+        // Функція розшифрування тексту
         function decrypt() {
             const encryptedText = document.getElementById('encryptedText').value;
             crypt.setPrivateKey(privateKey);
@@ -65,21 +119,24 @@
             document.getElementById('decryptedText').value = decrypted || 'Помилка розшифрування';
         }
 
-        // Квіз: генерація зашифрованого слова
-        const quizWord = "секрет";
-        crypt.setPublicKey(publicKey);
-        const quizEncrypted = crypt.encrypt(quizWord);
-        document.getElementById('quizEncrypted').value = quizEncrypted;
-
+        // Перевірка відповіді у квізі (нечутлива до регістру)
         function checkQuizAnswer() {
-            const userAnswer = document.getElementById('quizAnswer').value;
-            crypt.setPrivateKey(privateKey);
-            const decryptedWord = crypt.decrypt(quizEncrypted);
-            if (userAnswer === decryptedWord) {
+            const userAnswer = document.getElementById('quizAnswer').value.toLowerCase();
+            if (userAnswer === quizWord.toLowerCase()) {
                 document.getElementById('quizResult').innerText = 'Правильно!';
             } else {
                 document.getElementById('quizResult').innerText = 'Неправильно, спробуйте ще раз.';
             }
+        }
+
+        // Копіювання зашифрованого тексту в буфер обміну
+        function copyEncryptedText() {
+            const encryptedText = document.getElementById('encryptedText').value;
+            navigator.clipboard.writeText(encryptedText).then(() => {
+                alert('Зашифрований текст скопійовано в буфер обміну!');
+            }).catch(err => {
+                alert('Не вдалося скопіювати текст: ' + err);
+            });
         }
     </script>
 </body>
