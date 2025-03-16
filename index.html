@@ -56,26 +56,26 @@
         .tab {
             overflow: hidden;
             border: 1px solid #ccc;
-            background-color: #d3d3d3; /* Світло-сірий фон */
-            max-width: 540px; /* Збільшено ширину */
+            background-color: #d3d3d3;
+            max-width: 540px;
         }
         .tab button {
-            background-color: #a9a9a9; /* Темно-сірий колір кнопок */
+            background-color: #a9a9a9;
             float: left;
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 20px 30px; /* Збільшено розмір кнопок */
+            padding: 20px 30px;
             transition: 0.3s;
             width: 50%;
-            font-size: 18px; /* Збільшено розмір тексту */
-            color: white; /* Білий текст для контрасту */
+            font-size: 18px;
+            color: white;
         }
         .tab button:hover {
-            background-color: #808080; /* Темніший сірий при наведенні */
+            background-color: #808080;
         }
         .tab button.active {
-            background-color: #696969; /* Ще темніший сірий для активної вкладки */
+            background-color: #696969;
         }
         .tabcontent {
             display: none;
@@ -163,6 +163,18 @@
             <textarea id="rsaQuizEncrypted2" readonly></textarea>
             <input type="text" id="rsaQuizAnswer2" placeholder="Відповідь 2">
             <p class="quiz-result" id="rsaQuizResult2"></p>
+            <p><strong>Слово 3:</strong></p>
+            <textarea id="rsaQuizEncrypted3" readonly></textarea>
+            <input type="text" id="rsaQuizAnswer3" placeholder="Відповідь 3">
+            <p class="quiz-result" id="rsaQuizResult3"></p>
+            <p><strong>Слово 4:</strong></p>
+            <textarea id="rsaQuizEncrypted4" readonly></textarea>
+            <input type="text" id="rsaQuizAnswer4" placeholder="Відповідь 4">
+            <p class="quiz-result" id="rsaQuizResult4"></p>
+            <p><strong>Слово 5:</strong></p>
+            <textarea id="rsaQuizEncrypted5" readonly></textarea>
+            <input type="text" id="rsaQuizAnswer5" placeholder="Відповідь 5">
+            <p class="quiz-result" id="rsaQuizResult5"></p>
             <button onclick="checkRSAQuizAnswers()">Перевірити</button>
         </div>
 
@@ -176,6 +188,18 @@
             <textarea id="caesarQuizEncrypted2" readonly></textarea>
             <input type="text" id="caesarQuizAnswer2" placeholder="Відповідь 2">
             <p class="quiz-result" id="caesarQuizResult2"></p>
+            <p><strong>Слово 3:</strong></p>
+            <textarea id="caesarQuizEncrypted3" readonly></textarea>
+            <input type="text" id="caesarQuizAnswer3" placeholder="Відповідь 3">
+            <p class="quiz-result" id="caesarQuizResult3"></p>
+            <p><strong>Слово 4:</strong></p>
+            <textarea id="caesarQuizEncrypted4" readonly></textarea>
+            <input type="text" id="caesarQuizAnswer4" placeholder="Відповідь 4">
+            <p class="quiz-result" id="caesarQuizResult4"></p>
+            <p><strong>Слово 5:</strong></p>
+            <textarea id="caesarQuizEncrypted5" readonly></textarea>
+            <input type="text" id="caesarQuizAnswer5" placeholder="Відповідь 5">
+            <p class="quiz-result" id="caesarQuizResult5"></p>
             <button onclick="checkCaesarQuizAnswers()">Перевірити</button>
         </div>
     </section>
@@ -206,7 +230,7 @@
             navigator.clipboard.writeText(encryptedText).then(() => alert('Скопійовано!'));
         }
 
-        const rsaQuizWords = ["секрет", "код"];
+        const rsaQuizWords = ["Secret", "Cryptography", "Cipher", "RSA", "Key"];
         const rsaQuizEncrypted = rsaQuizWords.map(word => crypt.encrypt(word));
         rsaQuizEncrypted.forEach((encrypted, index) => {
             document.getElementById(`rsaQuizEncrypted${index + 1}`).value = encrypted;
@@ -216,7 +240,7 @@
             rsaQuizWords.forEach((word, index) => {
                 const userAnswer = document.getElementById(`rsaQuizAnswer${index + 1}`).value.toLowerCase();
                 const resultElement = document.getElementById(`rsaQuizResult${index + 1}`);
-                if (userAnswer === word) {
+                if (userAnswer === word.toLowerCase()) {
                     resultElement.innerText = 'Правильно!';
                     resultElement.style.color = 'green';
                 } else {
@@ -228,7 +252,7 @@
 
         // Caesar Cipher
         function caesarCipher(str, shift) {
-            const alphabet = 'абвгдеєжзиіїйклмнопрстуфхцчшщьюя';
+            const alphabet = 'abcdefghijklmnopqrstuvwxyz';
             const result = [];
             shift = shift % alphabet.length;
 
@@ -261,7 +285,7 @@
             navigator.clipboard.writeText(encryptedText).then(() => alert('Скопійовано!'));
         }
 
-        const caesarQuizWords = ["секрет", "код"];
+        const caesarQuizWords = ["Encryption", "Decryption", "Substitution", "Shift", "Ciphertext"];
         const caesarShift = 3;
         const caesarQuizEncrypted = caesarQuizWords.map(word => caesarCipher(word, caesarShift));
         caesarQuizEncrypted.forEach((encrypted, index) => {
@@ -272,7 +296,7 @@
             caesarQuizWords.forEach((word, index) => {
                 const userAnswer = document.getElementById(`caesarQuizAnswer${index + 1}`).value.toLowerCase();
                 const resultElement = document.getElementById(`caesarQuizResult${index + 1}`);
-                if (userAnswer === word) {
+                if (userAnswer === word.toLowerCase()) {
                     resultElement.innerText = 'Правильно!';
                     resultElement.style.color = 'green';
                 } else {
