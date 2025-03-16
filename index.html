@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шифрування RSA</title>
+    <title>Шифрування: RSA та Цезар</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            line-height: 1.6;
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            line-height: 1.6; 
             background-color: #f9f9f9;
         }
-        textarea, input, button {
-            display: block;
-            margin: 10px 0;
-            width: 100%;
-            max-width: 500px;
+        textarea, input, button { 
+            display: block; 
+            margin: 10px 0; 
+            width: 100%; 
+            max-width: 500px; 
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            margin: 20px 0;
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            margin: 20px 0; 
         }
         button {
             background-color: #4CAF50;
@@ -39,7 +39,7 @@
             padding: 10px;
             resize: vertical;
         }
-        input[type="text"] {
+        input[type="text"], input[type="number"] {
             padding: 8px;
             border: 1px solid #ccc;
         }
@@ -53,139 +53,247 @@
         section {
             margin-bottom: 40px;
         }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #d3d3d3; /* Світло-сірий фон */
+            max-width: 540px; /* Збільшено ширину */
+        }
+        .tab button {
+            background-color: #a9a9a9; /* Темно-сірий колір кнопок */
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 20px 30px; /* Збільшено розмір кнопок */
+            transition: 0.3s;
+            width: 50%;
+            font-size: 18px; /* Збільшено розмір тексту */
+            color: white; /* Білий текст для контрасту */
+        }
+        .tab button:hover {
+            background-color: #808080; /* Темніший сірий при наведенні */
+        }
+        .tab button.active {
+            background-color: #696969; /* Ще темніший сірий для активної вкладки */
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+            max-width: 460px;
+        }
     </style>
 </head>
 <body>
     <section>
-        <h1>Шифрування та розшифрування RSA</h1>
-        <p>RSA — це асиметричний криптографічний алгоритм, що використовує відкритий і закритий ключі для захисту даних.</p>
+        <h1>Шифрування: RSA та Цезар</h1>
+        <p>Дізнайтесь про два методи шифрування: асиметричний RSA та класичний шифр Цезаря.</p>
     </section>
 
     <section>
         <h2>Як працює RSA?</h2>
-        <p>Алгоритм базується на складності розкладання великих чисел на прості множники.</p>
+        <p>RSA базується на складності розкладання великих чисел на прості множники:</p>
         <ol>
-            <li>Обираються два великі прості числа \( p \) і \( q \).</li>
-            <li>Обчислюється їх добуток \( n = p \times q \), який використовується у відкритому та закритому ключах.</li>
-            <li>Обирається число \( e \) — відкритий ключ, взаємно просте з \( (p-1)(q-1) \).</li>
-            <li>Обчислюється закритий ключ \( d \), що є мультиплікативно оберненим до \( e \) за модулем \( (p-1)(q-1) \).</li>
+            <li>Обираються два прості числа \( p \) і \( q \).</li>
+            <li>Обчислюється \( n = p \times q \).</li>
+            <li>Обирається \( e \) — відкритий ключ.</li>
+            <li>Обчислюється \( d \) — закритий ключ.</li>
             <li>Шифрування: \( C = M^e \mod n \).</li>
             <li>Розшифрування: \( M = C^d \mod n \).</li>
         </ol>
+        <h3>Ілюстрація RSA</h3>
+        <img src="https://s.dou.ua/storage-files/image_10819236841681390497150.png" alt="Схема RSA">
     </section>
 
     <section>
-        <h3>Ілюстрація роботи RSA</h3>
-        <img src="https://s.dou.ua/storage-files/image_10819236841681390497150.png" alt="Схема роботи RSA">
-    </section>
-
-    <section>
-        <h2>Історія RSA</h2>
-        <p>RSA був винайдений у 1977 році Рональдом Рівестом, Аді Шаміром і Леонардом Адлеманом. Алгоритм названий за першими літерами їхніх прізвищ. RSA є одним із перших асиметричних криптографічних алгоритмів і широко використовується для захисту даних в інтернеті, зокрема в протоколах HTTPS, SSH та інших.</p>
+        <h2>Як працює шифр Цезаря?</h2>
+        <p>Шифр Цезаря зсуває кожну літеру тексту на фіксовану кількість позицій в алфавіті:</p>
+        <ol>
+            <li>Обирається алфавіт (наприклад, український).</li>
+            <li>Задається зсув \( n \).</li>
+            <li>Шифрування: літера зміщується на \( n \) позицій праворуч.</li>
+            <li>Розшифрування: літера зміщується на \( n \) позицій ліворуч.</li>
+        </ol>
+        <p><strong>Приклад:</strong> "секрет" зі зсувом 3 → "фйнтинг".</p>
     </section>
 
     <section>
         <h2>Демонстрація</h2>
-        <p>Введіть текст у поле нижче та натисніть "Зашифрувати", щоб отримати зашифроване повідомлення. Потім вставте зашифрований текст у відповідне поле та натисніть "Розшифрувати", щоб повернути оригінальний текст.</p>
-        <p><strong>Примітка:</strong> RSA призначений для шифрування невеликих повідомлень. Для великих даних використовуються гібридні схеми.</p>
-        <textarea id="inputText" placeholder="Введіть текст"></textarea>
-        <button onclick="encrypt()">Зашифрувати</button>
-        <textarea id="encryptedText" placeholder="Зашифрований текст"></textarea>
-        <button onclick="copyEncryptedText()">Копіювати зашифрований текст</button>
-        <button onclick="decrypt()">Розшифрувати</button>
-        <textarea id="decryptedText" placeholder="Розшифрований текст"></textarea>
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'RSA')">RSA</button>
+            <button class="tablinks" onclick="openTab(event, 'Caesar')">Шифр Цезаря</button>
+        </div>
+
+        <div id="RSA" class="tabcontent" style="display: block;">
+            <textarea id="rsaInputText" placeholder="Введіть текст"></textarea>
+            <button onclick="rsaEncrypt()">Зашифрувати</button>
+            <textarea id="rsaEncryptedText" placeholder="Зашифрований текст"></textarea>
+            <button onclick="rsaCopyEncryptedText()">Копіювати</button>
+            <button onclick="rsaDecrypt()">Розшифрувати</button>
+            <textarea id="rsaDecryptedText" placeholder="Розшифрований текст"></textarea>
+        </div>
+
+        <div id="Caesar" class="tabcontent">
+            <textarea id="caesarInputText" placeholder="Введіть текст"></textarea>
+            <input type="number" id="shift" placeholder="Введіть зсув (наприклад, 3)" value="3">
+            <button onclick="caesarEncrypt()">Зашифрувати</button>
+            <textarea id="caesarEncryptedText" placeholder="Зашифрований текст"></textarea>
+            <button onclick="caesarCopyEncryptedText()">Копіювати</button>
+            <button onclick="caesarDecrypt()">Розшифрувати</button>
+            <textarea id="caesarDecryptedText" placeholder="Розшифрований текст"></textarea>
+        </div>
     </section>
 
     <section>
-        <h2>Квіз: Розшифруйте слова</h2>
-        <p>Розшифруйте кожне з наведених зашифрованих слів за допомогою демонстрації та введіть правильні відповіді у відповідні поля.</p>
+        <h2>Квіз</h2>
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'RSAQuiz')">RSA Квіз</button>
+            <button class="tablinks" onclick="openTab(event, 'CaesarQuiz')">Цезар Квіз</button>
+        </div>
 
-        <p><strong>Зашифроване слово 1:</strong></p>
-        <textarea id="quizEncrypted1" readonly></textarea>
-        <input type="text" id="quizAnswer1" placeholder="Введіть розшифроване слово 1">
-        <p class="quiz-result" id="quizResult1"></p>
+        <div id="RSAQuiz" class="tabcontent" style="display: block;">
+            <p>Розшифруйте слова за допомогою RSA:</p>
+            <p><strong>Слово 1:</strong></p>
+            <textarea id="rsaQuizEncrypted1" readonly></textarea>
+            <input type="text" id="rsaQuizAnswer1" placeholder="Відповідь 1">
+            <p class="quiz-result" id="rsaQuizResult1"></p>
+            <p><strong>Слово 2:</strong></p>
+            <textarea id="rsaQuizEncrypted2" readonly></textarea>
+            <input type="text" id="rsaQuizAnswer2" placeholder="Відповідь 2">
+            <p class="quiz-result" id="rsaQuizResult2"></p>
+            <button onclick="checkRSAQuizAnswers()">Перевірити</button>
+        </div>
 
-        <p><strong>Зашифроване слово 2:</strong></p>
-        <textarea id="quizEncrypted2" readonly></textarea>
-        <input type="text" id="quizAnswer2" placeholder="Введіть розшифроване слово 2">
-        <p class="quiz-result" id="quizResult2"></p>
-
-        <p><strong>Зашифроване слово 3:</strong></p>
-        <textarea id="quizEncrypted3" readonly></textarea>
-        <input type="text" id="quizAnswer3" placeholder="Введіть розшифроване слово 3">
-        <p class="quiz-result" id="quizResult3"></p>
-
-        <p><strong>Зашифроване слово 4:</strong></p>
-        <textarea id="quizEncrypted4" readonly></textarea>
-        <input type="text" id="quizAnswer4" placeholder="Введіть розшифроване слово 4">
-        <p class="quiz-result" id="quizResult4"></p>
-
-        <p><strong>Зашифроване слово 5:</strong></p>
-        <textarea id="quizEncrypted5" readonly></textarea>
-        <input type="text" id="quizAnswer5" placeholder="Введіть розшифроване слово 5">
-        <p class="quiz-result" id="quizResult5"></p>
-
-        <button onclick="checkQuizAnswers()">Перевірити всі відповіді</button>
+        <div id="CaesarQuiz" class="tabcontent">
+            <p>Розшифруйте слова за допомогою шифру Цезаря (зсув = 3):</p>
+            <p><strong>Слово 1:</strong></p>
+            <textarea id="caesarQuizEncrypted1" readonly></textarea>
+            <input type="text" id="caesarQuizAnswer1" placeholder="Відповідь 1">
+            <p class="quiz-result" id="caesarQuizResult1"></p>
+            <p><strong>Слово 2:</strong></p>
+            <textarea id="caesarQuizEncrypted2" readonly></textarea>
+            <input type="text" id="caesarQuizAnswer2" placeholder="Відповідь 2">
+            <p class="quiz-result" id="caesarQuizResult2"></p>
+            <button onclick="checkCaesarQuizAnswers()">Перевірити</button>
+        </div>
     </section>
 
     <script>
-        // Генерація ключів RSA при завантаженні сторінки
+        // RSA
         const crypt = new JSEncrypt({ default_key_size: 1024 });
         crypt.getKey();
         const publicKey = crypt.getPublicKey();
         const privateKey = crypt.getPrivateKey();
 
-        // Масив слів для квіза
-        const quizWords = ["секрет", "код", "шифр", "таємниця", "загадка"];
-        const quizEncryptedTexts = [];
-
-        // Генерація зашифрованих слів для квіза
-        quizWords.forEach((word, index) => {
-            crypt.setPublicKey(publicKey);
-            const encrypted = crypt.encrypt(word);
-            quizEncryptedTexts.push(encrypted);
-            document.getElementById(`quizEncrypted${index + 1}`).value = encrypted;
-        });
-
-        // Функція шифрування тексту
-        function encrypt() {
-            const inputText = document.getElementById('inputText').value;
+        function rsaEncrypt() {
+            const inputText = document.getElementById('rsaInputText').value;
             crypt.setPublicKey(publicKey);
             const encrypted = crypt.encrypt(inputText);
-            document.getElementById('encryptedText').value = encrypted || 'Помилка шифрування';
+            document.getElementById('rsaEncryptedText').value = encrypted || 'Помилка';
         }
 
-        // Функція розшифрування тексту
-        function decrypt() {
-            const encryptedText = document.getElementById('encryptedText').value;
+        function rsaDecrypt() {
+            const encryptedText = document.getElementById('rsaEncryptedText').value;
             crypt.setPrivateKey(privateKey);
             const decrypted = crypt.decrypt(encryptedText);
-            document.getElementById('decryptedText').value = decrypted || 'Помилка розшифрування';
+            document.getElementById('rsaDecryptedText').value = decrypted || 'Помилка';
         }
 
-        // Перевірка всіх відповідей у квізі
-        function checkQuizAnswers() {
-            quizWords.forEach((word, index) => {
-                const userAnswer = document.getElementById(`quizAnswer${index + 1}`).value.toLowerCase();
-                const resultElement = document.getElementById(`quizResult${index + 1}`);
-                if (userAnswer === word.toLowerCase()) {
+        function rsaCopyEncryptedText() {
+            const encryptedText = document.getElementById('rsaEncryptedText').value;
+            navigator.clipboard.writeText(encryptedText).then(() => alert('Скопійовано!'));
+        }
+
+        const rsaQuizWords = ["секрет", "код"];
+        const rsaQuizEncrypted = rsaQuizWords.map(word => crypt.encrypt(word));
+        rsaQuizEncrypted.forEach((encrypted, index) => {
+            document.getElementById(`rsaQuizEncrypted${index + 1}`).value = encrypted;
+        });
+
+        function checkRSAQuizAnswers() {
+            rsaQuizWords.forEach((word, index) => {
+                const userAnswer = document.getElementById(`rsaQuizAnswer${index + 1}`).value.toLowerCase();
+                const resultElement = document.getElementById(`rsaQuizResult${index + 1}`);
+                if (userAnswer === word) {
                     resultElement.innerText = 'Правильно!';
                     resultElement.style.color = 'green';
                 } else {
-                    resultElement.innerText = 'Неправильно, спробуйте ще раз.';
+                    resultElement.innerText = 'Неправильно!';
                     resultElement.style.color = 'red';
                 }
             });
         }
 
-        // Копіювання зашифрованого тексту в буфер обміну
-        function copyEncryptedText() {
-            const encryptedText = document.getElementById('encryptedText').value;
-            navigator.clipboard.writeText(encryptedText).then(() => {
-                alert('Зашифрований текст скопійовано в буфер обміну!');
-            }).catch(err => {
-                alert('Не вдалося скопіювати текст: ' + err);
+        // Caesar Cipher
+        function caesarCipher(str, shift) {
+            const alphabet = 'абвгдеєжзиіїйклмнопрстуфхцчшщьюя';
+            const result = [];
+            shift = shift % alphabet.length;
+
+            for (let char of str.toLowerCase()) {
+                const index = alphabet.indexOf(char);
+                if (index === -1) {
+                    result.push(char);
+                } else {
+                    let newIndex = (index + shift + alphabet.length) % alphabet.length;
+                    result.push(alphabet[newIndex]);
+                }
+            }
+            return result.join('');
+        }
+
+        function caesarEncrypt() {
+            const text = document.getElementById('caesarInputText').value;
+            const shift = parseInt(document.getElementById('shift').value) || 3;
+            document.getElementById('caesarEncryptedText').value = caesarCipher(text, shift);
+        }
+
+        function caesarDecrypt() {
+            const text = document.getElementById('caesarEncryptedText').value;
+            const shift = parseInt(document.getElementById('shift').value) || 3;
+            document.getElementById('caesarDecryptedText').value = caesarCipher(text, -shift);
+        }
+
+        function caesarCopyEncryptedText() {
+            const encryptedText = document.getElementById('caesarEncryptedText').value;
+            navigator.clipboard.writeText(encryptedText).then(() => alert('Скопійовано!'));
+        }
+
+        const caesarQuizWords = ["секрет", "код"];
+        const caesarShift = 3;
+        const caesarQuizEncrypted = caesarQuizWords.map(word => caesarCipher(word, caesarShift));
+        caesarQuizEncrypted.forEach((encrypted, index) => {
+            document.getElementById(`caesarQuizEncrypted${index + 1}`).value = encrypted;
+        });
+
+        function checkCaesarQuizAnswers() {
+            caesarQuizWords.forEach((word, index) => {
+                const userAnswer = document.getElementById(`caesarQuizAnswer${index + 1}`).value.toLowerCase();
+                const resultElement = document.getElementById(`caesarQuizResult${index + 1}`);
+                if (userAnswer === word) {
+                    resultElement.innerText = 'Правильно!';
+                    resultElement.style.color = 'green';
+                } else {
+                    resultElement.innerText = 'Неправильно!';
+                    resultElement.style.color = 'red';
+                }
             });
+        }
+
+        // Tab Functionality
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
     </script>
 </body>
